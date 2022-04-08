@@ -15,12 +15,8 @@ module V1
         end
 
         def join_team
-            player = Player.find(params[:player_id])
-            team = Team.find(params[:team_id])
-            team_player = TeamPlayer.build_standard(player, team)
-
-            if team_player.save
-                render json: { data: { player: player, team_player: team_player } }
+            if TeamPlayer.join_team(params[:player_id], params[:team_id])
+                render json: { data: Player.get_with_teams(params[:player_id]) }
             else
                 render json: { data: 'error saving' }
             end
