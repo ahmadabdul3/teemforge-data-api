@@ -5,7 +5,8 @@ class CreateTeamPlayers < ActiveRecord::Migration[7.0]
       t.references :player, type: :uuid, foreign_key: true
 
       t.integer :num_goals, :default => 0
-      t.string :status, :default => 'inactive'
+      t.string :status, default: 'inactive'
+      t.string :player_status, default: 'inactive'
 
       t.timestamps
     end

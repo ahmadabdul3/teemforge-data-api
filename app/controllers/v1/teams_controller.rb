@@ -4,11 +4,28 @@ module V1
             render json: { data: Team.all }
         end
 
+        # creating a team should automatically make the player (who created the team)
+        # join the team
         def create
-            team = Team.new(name: valid_params[:name])
+            team = Team.new(valid_params)
 
             if team.save
                 render json: { data: team }
+            elsif team.errors.added? :name, :taken, value: valid_params[:name]
+                render json: { data: 'team name already taken' }
+            else
+                render json: { data: 'error saving' }
+            end
+        end
+
+        def update
+            updated = Team.update(params[:id], valid_params)
+            puts updated.errors.details
+
+            if !updated.errors.any?
+                render json: { data: updated }
+            elsif updated.errors.added? :name, :taken, value: valid_params[:name]
+                render json: { data: 'team name already taken' }
             else
                 render json: { data: 'error saving' }
             end
@@ -39,7 +56,8 @@ module V1
 
         def valid_params
             params.require(:team).permit(
-                :name
+                :name,
+                :recruiting,
             )
         end
     end

@@ -11,12 +11,13 @@ class Player < ApplicationRecord
         source: :team
 
     def self.get_with_teams(player_id)
-        Player.left_joins(:active_teams)
-        .group(:id)
-        .select(
-            'players.*',
-            'json_agg(teams.name) AS team_names'
-        )
-        .find(player_id)
+        Player
+            .left_joins(:active_teams)
+            .group(:id)
+            .select(
+                'players.*',
+                'json_agg(teams.name) AS team_names'
+            )
+            .find(player_id)
     end
 end

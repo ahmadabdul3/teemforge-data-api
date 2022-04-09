@@ -4,22 +4,30 @@ module V1
             render json: { data: Player.all }
         end
 
-        def create
-            player = Player.new(position: valid_params[:position])
+        def view_free_agents
+            render json: { data: Player.where(looking_for_team: true) }
+        end
 
-            if player.save
-                render json: { data: player }
-            else
-                render json: { data: 'error saving player' }
-            end
+        def create
+            player = Player.create!(valid_params)
+            render json: { data: player }
+        rescue
+            render json: { data: 'error saving' }
+        end
+
+        def update
+            updated = Player.update!(params[:id], valid_params)
+            render json: { data: updated }
+        rescue
+            render json: { data: 'error saving' }
         end
 
         def join_team
-            if TeamPlayer.join_team(params[:player_id], params[:team_id])
-                render json: { data: Player.get_with_teams(params[:player_id]) }
-            else
-                render json: { data: 'error saving' }
-            end
+            TeamPlayer.join_team(player_id: params[:player_id], team_id: params[:team_id])
+            render json: { data: Player.get_with_teams(params[:player_id]) }
+        rescue StandardError => e
+            TFLogger.log title: 'error', message: e
+            render json: { data: 'error saving', error: e }
         end
 
         def leave_team
@@ -41,7 +49,8 @@ module V1
 
         def valid_params
             params.require(:player).permit(
-                :position
+                :position,
+                :looking_for_team,
             )
         end
     end

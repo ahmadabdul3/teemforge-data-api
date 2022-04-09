@@ -16,6 +16,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_05_204245) do
 
   create_table "players", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "position"
+    t.boolean "looking_for_team", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -23,8 +24,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_05_204245) do
   create_table "team_players", force: :cascade do |t|
     t.uuid "team_id"
     t.uuid "player_id"
-    t.integer "num_goals"
+    t.integer "num_goals", default: 0
     t.string "status", default: "inactive"
+    t.string "player_status", default: "inactive"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["player_id"], name: "index_team_players_on_player_id"
@@ -34,6 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_05_204245) do
 
   create_table "teams", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
+    t.boolean "recruiting", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

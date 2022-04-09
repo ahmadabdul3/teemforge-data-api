@@ -1,9 +1,9 @@
 class Database
-    @@storage = {}
-    @@state = 'idle'
+    @storage = {}
+    @state = 'idle'
 
-    def self.storage
-      # Return the value of this variable
-      @@storage
+    class << self
+        attr_reader :storage
+        attr_accessor :state
     end
 end
