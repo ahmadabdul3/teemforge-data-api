@@ -6,10 +6,8 @@ class Team < ApplicationRecord
     # validations
     validates :name, uniqueness: true
 
-    @max_players = 6
-
-    class << self
-        attr_reader :max_players
+    def self.max_players
+        6
     end
 
     def self.max_players_reached(num_players:)

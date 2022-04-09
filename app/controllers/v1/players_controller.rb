@@ -9,31 +9,25 @@ module V1
         end
 
         def create
-            player = Player.new(valid_params)
-
-            if player.save
-                render json: { data: player }
-            else
-                render json: { data: 'error saving player' }
-            end
+            player = Player.create!(valid_params)
+            render json: { data: player }
+        rescue
+            render json: { data: 'error saving' }
         end
 
         def update
-            updated = Player.update(params[:id], valid_params)
-
-            if updated
-                render json: { data: updated }
-            else
-                render json: { data: 'error saving' }
-            end
+            updated = Player.update!(params[:id], valid_params)
+            render json: { data: updated }
+        rescue
+            render json: { data: 'error saving' }
         end
 
         def join_team
-            if TeamPlayer.join_team(player_id: params[:player_id], team_id: params[:team_id])
-                render json: { data: Player.get_with_teams(params[:player_id]) }
-            else
-                render json: { data: 'error saving' }
-            end
+            TeamPlayer.join_team(player_id: params[:player_id], team_id: params[:team_id])
+            render json: { data: Player.get_with_teams(params[:player_id]) }
+        rescue StandardError => e
+            TFLogger.log title: 'error', message: e
+            render json: { data: 'error saving', error: e }
         end
 
         def leave_team
