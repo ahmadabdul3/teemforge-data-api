@@ -4,7 +4,7 @@ class TeamPlayer < ApplicationRecord
     belongs_to :player
 
     # validations
-    validates_uniqueness_of :team_id, :scope => :player_id, :message => 'player already in this team'
+    validates_uniqueness_of :team_id, scope: :player_id, message: 'player already in this team'
 
     @status = {
         active: 'active',

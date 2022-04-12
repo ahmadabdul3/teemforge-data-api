@@ -19,6 +19,9 @@ Rails.application.routes.draw do
         patch '/players/:id', to: 'players#update'
         patch '/players/:player_id/join-team/:team_id', to: 'players#join_team'
         patch '/players/:player_id/leave-team/:team_id', to: 'players#leave_team'
+
+        # matches
+        get '/matches', to: 'matches#view_all'
     end
     # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -26,6 +29,13 @@ Rails.application.routes.draw do
     # root 'articles#index'
 end
 
+# fetch('http://localhost:3000/v1/matches', {
+#     headers: {
+#         'Content-Type': 'application/json',
+#     },
+# }).then(r => r.json()).then(r => {
+#     console.log('r, ', r);
+# });
 
 # fetch('http://localhost:3000/v1/teams', {
 #     method: 'POST',

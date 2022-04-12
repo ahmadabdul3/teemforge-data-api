@@ -13,6 +13,7 @@ leagues = League.create([
 teams = Team.create([
     { name: 'team 1' },
     { name: 'team 2' },
+    { name: 'team-3' },
 ]);
 
 leagueTeams = LeagueTeam.create([
@@ -21,15 +22,17 @@ leagueTeams = LeagueTeam.create([
 ]);
 
 players = Player.create([
-    { position: 'attack' },
-    { position: 'midfield' },
-    { position: 'defense' },
+    { position: Player.position[:attack] },
+    { position: Player.position[:midfield] },
+    { position: Player.position[:defense] },
+    { position: Player.position[:attack] },
 ]);
 
 TeamPlayer.create([
     { team: teams[0], player: players[0] },
     { team: teams[0], player: players[1] },
     { team: teams[1], player: players[2] },
+    { team: teams[2], player: players[3] },
 ]);
 
 matches = Match.create([
@@ -52,5 +55,16 @@ matches = Match.create([
         match_stage: Match.match_stage[:first_round],
         status: Match.status[:scheduled],
         match_dt: 2.week.from_now.beginning_of_day + 14.hours, # 2pm
+    },
+    {
+        # demonstrating a non-league match (aka, friendly or otherwise)
+        team_1: teams[0],
+        team_2: teams[2],
+        host_team: teams[2],
+        league: nil,
+        match_type: Match.match_type[:friendly],
+        match_stage: nil,
+        status: Match.status[:scheduled],
+        match_dt: 1.week.from_now.beginning_of_day + 10.hours, # 10am
     },
 ]);

@@ -8,5 +8,7 @@ class CreateLeagueTeams < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
+
+    add_index :league_teams, [:league_id, :team_id], unique: true
   end
 end
