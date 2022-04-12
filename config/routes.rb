@@ -2,13 +2,15 @@ Rails.application.routes.draw do
     namespace :v1 do
         get 'repositories', to: 'repositories#index'
 
+        # leagues
+        get '/leagues', to: 'leagues#view_all'
+
         # teams
         get '/teams', to: 'teams#view_all'
         get '/teams/:name', to: 'teams#view_by_name'
         get '/teams/all-for-player/:player_id', to: 'teams#view_all_for_player'
         post '/teams', to: 'teams#create'
         patch '/teams/:id', to: 'teams#update'
-
 
         # players
         get '/players', to: 'players#view_all'
