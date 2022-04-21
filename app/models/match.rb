@@ -8,10 +8,20 @@ class Match < ApplicationRecord
 
     # validations
 
-    # ensure if there's an invitation from either direction, we dont allow the new record
-    # still have to test this
-    validates_uniqueness_of :requesting_team_id, scope: :team_2_id, message: 'There is already a pending match request between these two teams'
-    validates_uniqueness_of :team_2_id, scope: :requesting_team_id, message: 'There is already a pending match request between these two teams'
+    # - ensure if there's an invitation from either direction (for the same 2 teams),
+    #   for the same date/time, we dont allow another invitation
+    # - this might need to become smarter and check the date explicitly to ensure
+    #   it's not on the same day, or at least not within the same hour of the
+    #   existing invitation
+    # - not sure if that'll be necessary but just keeping in mind
+    # - but only if the invitation is still in the requested state. if it has moved
+    #   past that stage (declined or otherwise), a new invitation can be created
+    # - still have to test this
+    # - the index in the db on these 2 columns should handle both scenarios
+    validates_uniqueness_of :requesting_team_id, scope: [:team_2_id, :match_dt],
+        message: 'There is already a pending match request between these two teams'
+    validates_uniqueness_of :team_2_id, scope: [:requesting_team_id, :match_dt],
+        message: 'There is already a pending match request between these two teams'
 
     @match_type = {
         friendly: 'friendly',

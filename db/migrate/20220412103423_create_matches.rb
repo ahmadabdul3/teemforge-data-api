@@ -9,7 +9,7 @@ class CreateMatches < ActiveRecord::Migration[7.0]
 
         t.string :match_type, default: Match.match_type[:friendly]
         t.string :match_stage
-        t.string :status
+        t.string :statusg
 
         t.integer :team_1_goals
         t.integer :team_2_goals
@@ -20,6 +20,6 @@ class CreateMatches < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_index :matches, [:requesting_team_id, :team_2_id], unique: true
+    add_index :matches, [:requesting_team_id, :team_2_id, :match_dt], unique: true
   end
 end
