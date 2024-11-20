@@ -16,6 +16,18 @@ Things you may want to cover:
 
 * Database creation
 
+after installing postgres run:
+
+`createdb` to create default postgres db
+
+then create an admin user:
+CREATE ROLE "teemforge-data-api" WITH LOGIN SUPERUSER PASSWORD 'teem-forge.22.xy_z';
+
+to delete the user:
+DROP ROLE "teemforge-data-api";
+
+to create the user/role and grant priveleges
+
 * Database initialization
 
 * How to run the test suite
