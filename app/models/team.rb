@@ -3,6 +3,9 @@ class Team < ApplicationRecord
     has_many :team_players
     has_many :players, through: :team_players
 
+    has_many :league_teams
+    has_many :leagues, through: :league_teams
+
     # validations
     validates :name, uniqueness: true
 

@@ -10,6 +10,16 @@ class Player < ApplicationRecord
         through: :active_team_players,
         source: :team
 
+    @position = {
+        attack: 'attack',
+        midfield: 'midfield',
+        defense: 'defense',
+    }
+
+    class << self
+        attr_reader :position
+    end
+
     def self.get_with_teams(player_id)
         Player
             .left_joins(:active_teams)

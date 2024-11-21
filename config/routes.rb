@@ -2,13 +2,15 @@ Rails.application.routes.draw do
     namespace :v1 do
         get 'repositories', to: 'repositories#index'
 
+        # leagues
+        get '/leagues', to: 'leagues#view_all'
+
         # teams
         get '/teams', to: 'teams#view_all'
         get '/teams/:name', to: 'teams#view_by_name'
         get '/teams/all-for-player/:player_id', to: 'teams#view_all_for_player'
         post '/teams', to: 'teams#create'
         patch '/teams/:id', to: 'teams#update'
-
 
         # players
         get '/players', to: 'players#view_all'
@@ -17,6 +19,9 @@ Rails.application.routes.draw do
         patch '/players/:id', to: 'players#update'
         patch '/players/:player_id/join-team/:team_id', to: 'players#join_team'
         patch '/players/:player_id/leave-team/:team_id', to: 'players#leave_team'
+
+        # matches
+        get '/matches', to: 'matches#view_all'
     end
     # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -24,6 +29,13 @@ Rails.application.routes.draw do
     # root 'articles#index'
 end
 
+# fetch('http://localhost:3000/v1/matches', {
+#     headers: {
+#         'Content-Type': 'application/json',
+#     },
+# }).then(r => r.json()).then(r => {
+#     console.log('r, ', r);
+# });
 
 # fetch('http://localhost:3000/v1/teams', {
 #     method: 'POST',

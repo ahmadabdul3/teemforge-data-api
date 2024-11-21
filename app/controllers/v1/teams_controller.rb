@@ -7,25 +7,21 @@ module V1
         # creating a team should automatically make the player (who created the team)
         # join the team
         def create
-            team = Team.new(valid_params)
-
-            if team.save
-                render json: { data: team }
-            elsif team.errors.added? :name, :taken, value: valid_params[:name]
-                render json: { data: 'team name already taken' }
-            else
-                render json: { data: 'error saving' }
-            end
+            team = Team.create! valid_params
+            render json: { data: team }
+        rescue ActiveRecord::RecordInvalid
+            render json: { data: 'team name already taken' }, status: 409
+        rescue
+            render json: { data: 'error saving' }, status: 400
         end
 
         def update
             updated = Team.update(params[:id], valid_params)
-            puts updated.errors.details
 
             if !updated.errors.any?
                 render json: { data: updated }
             elsif updated.errors.added? :name, :taken, value: valid_params[:name]
-                render json: { data: 'team name already taken' }
+                render json: { data: 'team name already taken' }, status: 409
             else
                 render json: { data: 'error saving' }
             end
